@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Python for Statistics — Setup Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ── Design tokens ── */
+    :root {
+      --bg:               #f4f6f9;
+      --surface:          #ffffff;
+      --border:           #e2e8f0;
+      --text:             #1a202c;
+      --text-muted:       #64748b;
+      --primary:          #2563eb;
+      --primary-bg:       #eff6ff;
+      --code-bg:          #1e293b;
+      --code-text:        #cbd5e1;
+      --tip-border:       #22c55e;
+      --tip-bg:           #f0fdf4;
+      --tip-text:         #14532d;
+      --warn-border:      #f59e0b;
+      --warn-bg:          #fffbeb;
+      --warn-text:        #78350f;
+      --badge-admin-bg:   #fee2e2;
+      --badge-admin-text: #991b1b;
+      --badge-admin-bdr:  #fca5a5;
+      --badge-user-bg:    #dcfce7;
+      --badge-user-text:  #166534;
+      --badge-user-bdr:   #86efac;
+      --badge-mix-bg:     #fff7ed;
+      --badge-mix-text:   #9a3412;
+      --badge-mix-bdr:    #fdba74;
+      --nav-bg:           #ffffff;
+      --tab-hover:        #f1f5f9;
+      --tab-active-bg:    #2563eb;
+      --tab-active-text:  #ffffff;
+      --circle-bg:        #2563eb;
+      --circle-text:      #ffffff;
+      --shadow-sm:        0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.05);
+      --radius-card:      12px;
+      --hero-from:        #1e3a5f;
+      --hero-to:          #2563eb;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:               #0f172a;
+        --surface:          #1e293b;
+        --border:           #334155;
+        --text:             #f1f5f9;
+        --text-muted:       #94a3b8;
+        --primary:          #60a5fa;
+        --primary-bg:       #1e3a5f;
+        --code-bg:          #0d1117;
+        --code-text:        #adbac7;
+        --tip-border:       #4ade80;
+        --tip-bg:           #052e16;
+        --tip-text:         #86efac;
+        --warn-border:      #fbbf24;
+        --warn-bg:          #1c0f00;
+        --warn-text:        #fde68a;
+        --badge-admin-bg:   #450a0a;
+        --badge-admin-text: #fca5a5;
+        --badge-admin-bdr:  #7f1d1d;
+        --badge-user-bg:    #052e16;
+        --badge-user-text:  #86efac;
+        --badge-user-bdr:   #166534;
+        --badge-mix-bg:     #1c0a00;
+        --badge-mix-text:   #fdba74;
+        --badge-mix-bdr:    #7c2d12;
+        --nav-bg:           #1e293b;
+        --tab-hover:        #334155;
+        --tab-active-bg:    #2563eb;
+        --tab-active-text:  #ffffff;
+        --circle-bg:        #2563eb;
+        --circle-text:      #ffffff;
+        --shadow-sm:        0 1px 3px rgba(0,0,0,0.4);
+        --hero-from:        #0f172a;
+        --hero-to:          #1e3a5f;
+      }
+    }
+
+    /* ── Reset ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      font-size: 16px;
+    }
+
+    /* ── Sticky nav ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--nav-bg);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      min-height: 56px;
+      flex-wrap: wrap;
+    }
+
+    .nav-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .nav-title em {
+      color: var(--primary);
+      font-style: normal;
+    }
+
+    .tab-switcher {
+      display: flex;
+      gap: 3px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 3px;
+    }
+
+    .tab-btn {
+      padding: 0.35rem 1rem;
+      border: none;
+      background: transparent;
+      border-radius: 7px;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: background 0.13s, color 0.13s;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover { background: var(--tab-hover); color: var(--text); }
+    .tab-btn.active { background: var(--tab-active-bg); color: var(--tab-active-text); }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, var(--hero-from) 0%, var(--hero-to) 100%);
+      color: #fff;
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.75rem, 5vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.65rem;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      opacity: 0.82;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ── Main layout ── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4.5rem;
+    }
+
+    .platform-panel { display: none; }
+    .platform-panel.active { display: block; }
+
+    /* ── Step card ── */
+    .step-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 1.75rem;
+      margin-bottom: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .step-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .step-circle {
+      width: 36px;
+      min-width: 36px;
+      height: 36px;
+      background: var(--circle-bg);
+      color: var(--circle-text);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .step-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
+    /* ── Badges ── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.2rem 0.65rem;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      border: 1px solid;
+      white-space: nowrap;
+    }
+
+    .badge-admin {
+      background: var(--badge-admin-bg);
+      color: var(--badge-admin-text);
+      border-color: var(--badge-admin-bdr);
+    }
+
+    .badge-user {
+      background: var(--badge-user-bg);
+      color: var(--badge-user-text);
+      border-color: var(--badge-user-bdr);
+    }
+
+    .badge-mix {
+      background: var(--badge-mix-bg);
+      color: var(--badge-mix-text);
+      border-color: var(--badge-mix-bdr);
+    }
+
+    /* ── Step body ── */
+    .step-body p {
+      font-size: 0.925rem;
+      color: var(--text);
+      margin: 0.55rem 0;
+    }
+
+    .step-body ul, .step-body ol {
+      padding-left: 1.4rem;
+      margin: 0.5rem 0;
+    }
+
+    .step-body li {
+      font-size: 0.925rem;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
+    .step-body strong { font-weight: 600; }
+
+    /* ── Code blocks ── */
+    .cmd-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin: 1.1rem 0 0.3rem;
+    }
+
+    pre {
+      background: var(--code-bg);
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+      overflow-x: auto;
+      margin: 0.4rem 0 0.75rem;
+    }
+
+    pre code {
+      font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+      font-size: 0.84rem;
+      color: var(--code-text);
+      line-height: 1.75;
+      display: block;
+    }
+
+    /* inline code */
+    p code, li code, td code, th code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.84em;
+      background: var(--primary-bg);
+      color: var(--primary);
+      padding: 0.1em 0.42em;
+      border-radius: 4px;
+    }
+
+    /* ── Callout boxes ── */
+    .callout {
+      border-left: 4px solid;
+      border-radius: 0 8px 8px 0;
+      padding: 0.85rem 1rem;
+      margin: 0.75rem 0;
+    }
+
+    .callout-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 0.45rem;
+    }
+
+    .callout p, .callout li {
+      font-size: 0.885rem;
+      line-height: 1.6;
+    }
+
+    .callout p + p { margin-top: 0.4rem; }
+
+    .callout ul { padding-left: 1.2rem; margin-top: 0.3rem; }
+    .callout li { margin-bottom: 0.2rem; }
+
+    /* callout code inherits inline style but on callout backgrounds */
+    .callout-warn code {
+      background: rgba(0,0,0,0.07);
+      color: var(--warn-text);
+    }
+
+    .callout-tip code {
+      background: rgba(0,0,0,0.07);
+      color: var(--tip-text);
+    }
+
+    .callout-warn pre {
+      margin-top: 0.5rem;
+    }
+
+    .callout-warn {
+      border-color: var(--warn-border);
+      background: var(--warn-bg);
+      color: var(--warn-text);
+    }
+
+    .callout-tip {
+      border-color: var(--tip-border);
+      background: var(--tip-bg);
+      color: var(--tip-text);
+    }
+
+    /* ── Section headings ── */
+    .section-heading {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 2.75rem 0 1.1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    /* ── Static cards (R tips, Gotchas) ── */
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 1.75rem;
+      margin-bottom: 1.25rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .info-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 1.25rem 0 0.5rem;
+    }
+
+    .info-card h3:first-child { margin-top: 0; }
+
+    .info-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin: 0.4rem 0;
+    }
+
+    /* ── Tables ── */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+    }
+
+    .data-table th {
+      background: var(--bg);
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.6rem 0.9rem;
+      text-align: left;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .data-table td {
+      padding: 0.65rem 0.9rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+      color: var(--text);
+    }
+
+    .data-table tr:last-child td { border-bottom: none; }
+
+    .data-table td:first-child { font-weight: 500; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      padding: 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .nav-inner {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0.6rem 1rem 0.75rem;
+        min-height: auto;
+        gap: 0.5rem;
+      }
+
+      .tab-switcher { justify-content: stretch; }
+      .tab-btn { flex: 1; text-align: center; padding: 0.4rem 0.4rem; font-size: 0.82rem; }
+
+      main { padding: 1.25rem 1rem 3rem; }
+      .step-card, .info-card { padding: 1.25rem 1.1rem; }
+      .hero { padding: 2rem 1rem 1.75rem; }
+
+      .data-table { font-size: 0.8rem; }
+      .data-table th, .data-table td { padding: 0.5rem 0.6rem; }
+
+      .step-header { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─────────────────────────── NAV ─────────────────────────── -->
+<nav aria-label="Platform selector">
+  <div class="nav-inner">
+    <div class="nav-title">Python for Statistics &mdash; <em>Setup Guide</em></div>
+    <div class="tab-switcher" role="tablist" aria-label="Choose your platform">
+      <button class="tab-btn active" role="tab" aria-selected="true"
+              aria-controls="panel-linux"  id="tab-linux"
+              onclick="switchTab('linux')">🐧 Linux</button>
+      <button class="tab-btn" role="tab" aria-selected="false"
+              aria-controls="panel-macos"  id="tab-macos"
+              onclick="switchTab('macos')">🍎 macOS</button>
+      <button class="tab-btn" role="tab" aria-selected="false"
+              aria-controls="panel-windows" id="tab-windows"
+              onclick="switchTab('windows')">🪟 Windows</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ─────────────────────────── HERO ─────────────────────────── -->
+<header class="hero">
+  <h1>Python for Statistics</h1>
+  <p>A step-by-step setup guide for R users new to Python &mdash; get JupyterLab running with a clean virtual environment in four steps.</p>
+</header>
+
+<!-- ─────────────────────────── MAIN ─────────────────────────── -->
+<main>
+
+  <!-- ═══════════════════════ LINUX ═══════════════════════ -->
+  <section class="platform-panel active" id="panel-linux" role="tabpanel" aria-labelledby="tab-linux">
+
+    <!-- Step 1 -->
+    <article class="step-card">
+      <div class="step-header">
+        <div class="step-circle" aria-hidden="true">1</div>
+        <div>
+          <div class="step-title">Install Python</div>
+          <span class="badge badge-admin">Requires admin / IT</span>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>First, check whether Python 3 is already installed:</p>
+        <div class="cmd-label">Terminal</div>
+        <pre><code>python3 --version</code></pre>
+        <p>If you see a version number (e.g. <code>Python 3.11.4</code>), you can skip straight to Step 2. Otherwise, install Python via your distribution's package manager:</p>
+
+        <div class="cmd-label">Debian / Ubuntu</div>
+        <pre><code>sudo apt update
+sudo apt install python3 python3-pip</code></pre>
+
+        <div class="cmd-label">Fedora / RHEL / CentOS</div>
+        <pre><code>sudo dnf install python3 python3-pip</code></pre>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">Gotcha</div>
+          <p><code>sudo</code> is required only for this step. Everything from Step 2 onwards runs entirely as your regular user account &mdash; no need to involve IT again.</p>
+        </div>
+        <div class="callout callout-tip">
+          <div class="callout-label">Tip</div>
+          <p>Most modern distributions (Ubuntu 22.04+, Fedora 38+) ship with Python 3 pre-installed. Always run <code>python3 --version</code> before contacting IT.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Step 2 -->
+    <article class="step-card">
+      <div class="step-header">
+        <div class="step-circle" aria-hidden="true">2</div>
+        <div>
+          <div class="step-title">Install JupyterLab &amp; run your first code</div>
+          <span class="badge badge-user">User only</span>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>Install JupyterLab into your personal user directory (no <code>sudo</code> needed):</p>
+        <div class="cmd-label">Terminal</div>
+        <pre><code>pip install --user jupyterlab</code></pre>
+        <p>Then launch it:</p>
+        <pre><code>jupyter lab</code></pre>
+        <p>A browser tab opens automatically. Create a new Python 3 notebook, type the following into the first cell, and press <strong>Shift+Enter</strong> to run it:</p>
+        <pre><code>print("Hello from Python!")
+2 + 2</code></pre>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">Gotcha &mdash; Ubuntu 23+ "externally managed environment"</div>
+          <p>On Ubuntu 23.04 and later, running <code>pip install</code> outside a virtual environment produces an error about an "externally managed environment". If you see this, jump ahead to Step 3 to create a virtual environment first, then come back here and install JupyterLab <em>inside</em> the activated venv.</p>
+        </div>
+        <div class="callout callout-tip">
+          <div class="callout-label">Tip</div>
+          <p>If the <code>jupyter</code> command is not found after installing, try <code>python3 -m jupyterlab</code> as a workaround, or log out and back in so that <code>~/.local/bin</code> is added to your <code>PATH</code>.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Step 3 -->
+    <article class="step-card">
+      <div class="step-header">
+        <div class="step-circle" aria-hidden="true">3</div>
+        <div>
+          <div class="step-title">Create a virtual environment</div>
+          <span class="badge badge-user">User only</span>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>A virtual environment is an isolated Python installation just for your project. Think of it like a separate R library folder that cannot interfere with anything else on your system.</p>
+        <div class="cmd-label">Terminal</div>
+        <pre><code>python3 -m venv ~/stats-env</code></pre>
+        <p>This creates a folder at <code>~/stats-env</code> containing its own private Python interpreter and pip.</p>
+        <div class="callout callout-tip">
+          <div class="callout-label">Tip</div>
+          <p>You only need to create the environment once. After that, you simply <em>activate</em> it at the start of each working session (Step 4).</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Step 4 -->
+    <article class="step-card">
+      <div class="step-header">
+        <div class="step-circle" aria-hidden="true">4</div>
+        <div>
+          <div class="step-title">Activate the venv &amp; manage packages</div>
+          <span class="badge badge-user">User only</span>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>Activate your environment at the start of each working session:</p>
+        <div class="cmd-label">Terminal</div>
+        <pre><code>source ~/stats-env/bin/activate</code></pre>
+        <p>Your shell prompt changes to show <code>(stats-env)</code> &mdash; you are now inside the environment and all <code>pip</code> commands will install only here.</p>
+
+        <p><strong>Install JupyterLab inside the venv</strong> (keeps the kernel aligned with your packages):</p>
+        <pre><code>pip install jupyterlab
+jupyter lab</code></pre>
+
+        <p><strong>Install a library:</strong></p>
+        <pre><code>pip install pandas</code></pre>
+
+        <p><strong>Pin to a specific version:</strong></p>
+        <pre><code>pip install scipy==1.11.0</code></pre>
+
+        <p><strong>Upgrade to the latest version:</strong></p>
+        <pre><code>pip install --upgrade pandas</code></pre>
+
+        <p><strong>Install below a version ceiling (safe downgrade):</strong></p>
+        <pre><code>pip install "pandas&lt;2.0"</code></pre>
+
+        <p><strong>Remove a library:</strong></p>
+        <pre><code>pip uninstall pandas</code></pre>
+
+        <p><strong>Freeze your environment to a file</strong> (equivalent to <code>renv::snapshot()</code>):</p>
+        <pre><code>pip freeze &gt; requirements.txt</code></pre>
+
+        <p><strong>Recreate the environment from that file on another machine:</strong></p>
+        <pre><code>pip install -r requirements.txt</code></pre>
+
+        <p><strong>Deactivate when you are finished:</strong></p>
+        <pre><code>deactivate</code></pre>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">Gotcha &mdash; Activate every new terminal session</div>
+          <p>Opening a new terminal window drops you back to the system Python. You must run <code>source ~/stats-env/bin/activate</code> again each time. The activation is not persistent.</p>
+        </div>
+        <div class="callout callout-tip">
+          <div class="callout-label">Tip</div>
+          <p>Confirm the right Python is active with <code>which python3</code>. If the path shown includes <code>stats-env</code>, you are in the correct environment.</p>
+        </div>
+      </div>
+    </article>
+  </section><!-- /linux -->
+
+
+  <!-- ═══════════════════════ MACOS ═══════════════════════ -->
+  <section class="platform-panel" id="panel-macos" role="tabpanel" aria-labelledby="tab-macos">
+
+    <!-- Step 1 -->
+    <article class="step-card">
+      <div class="step-header">
+        <div class="step-circle" aria-hidden="true">1</div>
+        <div>
+          <div class="step-title">Install Python</div>
+          <span class="badge badge-user">User only</span>
+        </div>
+      </div>
+      <div class="step-body">
+        <div class="callout callout-warn">
+          <div class="callout-label">Gotcha &mdash; Do not use Apple's built-in Python</div>
+          <p>macOS ships a Python stub or a stripped-down Apple-managed Python. Running <code>python3</code> may trigger an Xcode installer prompt, or silently give you a version you cannot upgrade or customise. Always install Python yourself using one of the options below.</p>
+        </div>
+
+        <p><strong>Option A &mdash; Official python.org installer</strong> (recommended for most users):</p>
+        <p>Download the macOS <code>.pkg</code> file from <strong>python.org</strong> and run the installer. Choose the latest stable Python 3.11 or 3.12 release.</p>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">Gotcha &mdash; python.org installer and PATH</div>
+          <p>The installer may not add Python to your shell's <code>PATH</code> automatically. If <code>python3 --version</code> still shows the Apple stub after installing, add this line to <code>~/.zshrc</code> (adjust the version number to match what you installed):</p>
+          <pre><code>export PATH="/Library/Frameworks/Python.framework/Versions/3.12/bin:$PATH"</code></pre>
+          <p>Then apply the change with <code>source ~/.zshrc</code>.</p>
+        </div>
+
+        <p><strong>Option B &mdash; Homebrew:</strong></p>
+        <div class="cmd-label">Terminal</div>
+        <pre><code># Install Homebrew if not already present (one-time)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install Python
+brew install python</code></pre>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">Gotcha &mdash; Apple Silicon PATH for Homebrew</div>
+          <p>On Apple Silicon Macs (M1, M2, M3), Homebrew installs to <code>/opt/homebrew/bin</code> rather than <code>/usr/local/bin</code> (Intel). If <code>python3</code> is not found after installing, add the following to your <code>~/.zshrc</code> and then run <code>source ~/.zshrc</code>:</p>
+          <pre><code>eval "$(/opt/homebrew/bin/brew shellenv)"</code></pre>
+        </div>
+        <div class="callout callout-tip">
+          <div class="callout-label">Tip</div>
+          <p>After installing, verify with <code>python3 --version</code>. You should see the version you installed (e.g. <code>Python 3.12.2</code>), not an Apple-branded stub.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Step 2 -->
+    <article class="step-card">
+      <div class="step-header">
+        <div class="step-circle" aria-hidden="true">2</div>
+        <div>
+          <div class="step-title">Install JupyterLab &amp; run your first code</div>
+          <span class="badge badge-user">User only</span>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>Install JupyterLab into your user directory:</p>
+        <div class="cmd-label">Terminal</div>
+        <pre><code>pip3 install --user jupyterlab</code></pre>
+        <p>Then launch it:</p>
+        <pre><code>jupyter lab</code></pre>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">Gotcha &mdash; jupyter not found on PATH</div>
+          <p>On macOS, <code>--user</code> installs scripts to <code>~/Library/Python/3.x/bin</code>, which is typically not on your <code>PATH</code>. If <code>jupyter</code> is not found, add this to <code>~/.zshrc</code> (replace <code>3.12</code> with your version):</p>
+          <pre><code>export PATH="$HOME/Library/Python/3.12/bin:$PATH"</code></pre>
+          <p>Then run <code>source ~/.zshrc</code>. Alternatively, use <code>python3 -m jupyterlab</code> as an immediate workaround.</p>
+        </div>
+        <div class="callout callout-warn">
+          <div class="callout-label">Gotcha &mdash; macOS Ventura+ "externally managed environment"</div>
+          <p>On macOS Ventura (13) and later, <code>pip3 install</code> directly may raise an "externally managed environment" error. If you see this, skip to Step 3 to create a virtual environment first, then install JupyterLab inside the activated venv.</p>
+        </div>
+        <div class="callout callout-tip">
+          <div class="callout-label">Tip</div>
+          <p>In your first notebook, run <code>print("Hello from Python!")</code> in a cell with <strong>Shift+Enter</strong>. If it prints the message, everything is wired up correctly.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Step 3 -->
+    <article class="step-card">
+      <div class="step-header">
+        <div class="step-circle" aria-hidden="true">3</div>
+        <div>
+          <div class="step-title">Create a virtual environment</div>
+          <span class="badge badge-user">User only</span>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>Create an isolated Python environment for your statistics work:</p>
+        <div class="cmd-label">Terminal</div>
+        <pre><code>python3 -m venv ~/stats-env</code></pre>
+        <div class="callout callout-tip">
+          <div class="callout-label">Tip</div>
+          <p>You only need to create this once. From then on, just activate it at the start of each session (Step 4).</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Step 4 -->
+    <article class="step-card">
+      <div class="step-header">
+        <div class="step-circle" aria-hidden="true">4</div>
+        <div>
+          <div class="step-title">Activate the venv &amp; manage packages</div>
+          <span class="badge badge-user">User only</span>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>Activate your environment at the start of each session:</p>
+        <div class="cmd-label">Terminal</div>
+        <pre><code>source ~/stats-env/bin/activate</code></pre>
+        <p>Your prompt changes to show <code>(stats-env)</code> &mdash; you are now inside the environment.</p>
+
+        <p><strong>Install JupyterLab inside the venv:</strong></p>
+        <pre><code>pip install jupyterlab
+jupyter lab</code></pre>
+
+        <p><strong>Install a library:</strong></p>
+        <pre><code>pip install pandas</code></pre>
+
+        <p><strong>Pin to a specific version:</strong></p>
+        <pre><code>pip install scipy==1.11.0</code></pre>
+
+        <p><strong>Upgrade to the latest version:</strong></p>
+        <pre><code>pip install --upgrade pandas</code></pre>
+
+        <p><strong>Install below a version ceiling:</strong></p>
+        <pre><code>pip install "pandas&lt;2.0"</code></pre>
+
+        <p><strong>Remove a library:</strong></p>
+        <pre><code>pip uninstall pandas</code></pre>
+
+        <p><strong>Freeze your environment</strong> (equivalent to <code>renv::snapshot()</code>):</p>
+        <pre><code>pip freeze &gt; requirements.txt</code></pre>
+
+        <p><strong>Recreate the environment from requirements:</strong></p>
+        <pre><code>pip install -r requirements.txt</code></pre>
+
+        <p><strong>Deactivate when finished:</strong></p>
+        <pre><code>deactivate</code></pre>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">Gotcha &mdash; Apple Silicon and scientific libraries</div>
+          <p>On Apple Silicon (M1/M2/M3), packages like <strong>NumPy</strong>, <strong>SciPy</strong>, and <strong>Pandas</strong> require <strong>Python 3.11 or later</strong> to get native ARM64 wheels. Older Python versions fall back to Rosetta 2 (x86) builds, which are slower and may fail to install entirely.</p>
+        </div>
+        <div class="callout callout-tip">
+          <div class="callout-label">Tip</div>
+          <p>Verify the active Python with <code>which python3</code>. If the path includes <code>stats-env</code>, you are in the right place.</p>
+        </div>
+      </div>
+    </article>
+  </section><!-- /macos -->
+
+
+  <!-- ═══════════════════════ WINDOWS ═══════════════════════ -->
+  <section class="platform-panel" id="panel-windows" role="tabpanel" aria-labelledby="tab-windows">
+
+    <!-- Step 1 -->
+    <article class="step-card">
+      <div class="step-header">
+        <div class="step-circle" aria-hidden="true">1</div>
+        <div>
+          <div class="step-title">Install Python</div>
+          <span class="badge badge-mix">Admin for all-users install; user-only for per-user</span>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>Download the Windows installer (<code>.exe</code>) from <strong>python.org</strong>. Before clicking Install, read these carefully:</p>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">Critical &mdash; Tick "Add Python to PATH"</div>
+          <p>On the very first screen of the installer, make sure to check <strong>"Add python.exe to PATH"</strong> before clicking anything else. This is the single most common cause of problems for new Python users on Windows. If you missed it, re-run the installer and choose <strong>Modify</strong>.</p>
+        </div>
+
+        <p><strong>Per-user vs. system-wide:</strong></p>
+        <ul>
+          <li><strong>Install just for me (per-user)</strong> &mdash; the default; no admin rights required. Python installs to <code>%LOCALAPPDATA%\Programs\Python</code>.</li>
+          <li><strong>Install for all users</strong> &mdash; requires admin rights; installs to <code>C:\Program Files\Python3x</code>.</li>
+        </ul>
+        <p>For most users, the per-user install is perfectly fine and does not require IT involvement.</p>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">Gotcha &mdash; Microsoft Store Python intercept</div>
+          <p>Windows may silently redirect <code>python</code> and <code>python3</code> commands to the Microsoft Store instead of your real installation. To disable this:</p>
+          <p><strong>Settings &rarr; Apps &rarr; Advanced app settings &rarr; App execution aliases</strong></p>
+          <p>Toggle off both <code>python.exe</code> and <code>python3.exe</code> entries.</p>
+        </div>
+        <div class="callout callout-tip">
+          <div class="callout-label">Tip</div>
+          <p>After installing, open a <em>new</em> Command Prompt window and run <code>python --version</code>. You should see the version you just installed. If you see a Store prompt, revisit the App execution aliases step above.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Step 2 -->
+    <article class="step-card">
+      <div class="step-header">
+        <div class="step-circle" aria-hidden="true">2</div>
+        <div>
+          <div class="step-title">Install JupyterLab &amp; run your first code</div>
+          <span class="badge badge-user">User only</span>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>Open <strong>Command Prompt</strong> (search for "cmd" in the Start menu) and install JupyterLab:</p>
+        <div class="cmd-label">Command Prompt</div>
+        <pre><code>pip install jupyterlab</code></pre>
+        <p>Then launch it:</p>
+        <pre><code>jupyter lab</code></pre>
+        <p>A browser tab opens automatically. Create a new Python 3 notebook, type the following, and press <strong>Shift+Enter</strong>:</p>
+        <pre><code>print("Hello from Python!")
+2 + 2</code></pre>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">Gotcha &mdash; PowerShell execution policy</div>
+          <p>If you prefer PowerShell, JupyterLab's activation scripts may be blocked by the default execution policy. Fix this once with:</p>
+          <pre><code>Set-ExecutionPolicy RemoteSigned -Scope CurrentUser</code></pre>
+          <p>You only need to do this once per machine.</p>
+        </div>
+        <div class="callout callout-warn">
+          <div class="callout-label">Gotcha &mdash; 'jupyter' not recognised</div>
+          <p>If the <code>jupyter</code> command is not found, Python's <code>Scripts</code> folder may not be on your <code>PATH</code>. As an immediate workaround, run JupyterLab via:</p>
+          <pre><code>python -m jupyterlab</code></pre>
+          <p>To fix <code>PATH</code> permanently, re-run the Python installer and ensure "Add Python to PATH" is ticked.</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Step 3 -->
+    <article class="step-card">
+      <div class="step-header">
+        <div class="step-circle" aria-hidden="true">3</div>
+        <div>
+          <div class="step-title">Create a virtual environment</div>
+          <span class="badge badge-user">User only</span>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>Create an isolated Python environment for your project. In Command Prompt, replacing <code>YourName</code> with your actual Windows username:</p>
+        <div class="cmd-label">Command Prompt</div>
+        <pre><code>python -m venv C:\Users\YourName\stats-env</code></pre>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">Gotcha &mdash; No spaces in the path</div>
+          <p>Do not place your virtual environment in a folder whose path contains spaces (e.g. <code>C:\My Projects\stats-env</code>). Some tools break on paths with spaces. Keep it directly under <code>C:\Users\YourName\</code>.</p>
+        </div>
+        <div class="callout callout-warn">
+          <div class="callout-label">Gotcha &mdash; Windows 260-character path limit</div>
+          <p>Windows enforces a 260-character path limit by default. If you see "path too long" errors when installing packages, ask IT to enable long paths via Group Policy. If you have admin rights yourself, you can enable it with:</p>
+          <pre><code>reg add "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem" /v LongPathsEnabled /t REG_DWORD /d 1 /f</code></pre>
+        </div>
+        <div class="callout callout-tip">
+          <div class="callout-label">Tip</div>
+          <p>You only need to create the environment once. From then on, just activate it at the start of each session (Step 4).</p>
+        </div>
+      </div>
+    </article>
+
+    <!-- Step 4 -->
+    <article class="step-card">
+      <div class="step-header">
+        <div class="step-circle" aria-hidden="true">4</div>
+        <div>
+          <div class="step-title">Activate the venv &amp; manage packages</div>
+          <span class="badge badge-user">User only</span>
+        </div>
+      </div>
+      <div class="step-body">
+        <p>Activate your environment. The command depends on which shell you are using:</p>
+        <div class="cmd-label">Command Prompt</div>
+        <pre><code>C:\Users\YourName\stats-env\Scripts\activate.bat</code></pre>
+        <div class="cmd-label">PowerShell</div>
+        <pre><code>C:\Users\YourName\stats-env\Scripts\Activate.ps1</code></pre>
+        <p>Your prompt changes to show <code>(stats-env)</code> &mdash; you are now inside the environment.</p>
+
+        <p><strong>Install JupyterLab inside the venv:</strong></p>
+        <pre><code>pip install jupyterlab
+jupyter lab</code></pre>
+
+        <p><strong>Install a library:</strong></p>
+        <pre><code>pip install pandas</code></pre>
+
+        <p><strong>Pin to a specific version:</strong></p>
+        <pre><code>pip install scipy==1.11.0</code></pre>
+
+        <p><strong>Upgrade to the latest version:</strong></p>
+        <pre><code>pip install --upgrade pandas</code></pre>
+
+        <p><strong>Install below a version ceiling:</strong></p>
+        <pre><code>pip install "pandas&lt;2.0"</code></pre>
+
+        <p><strong>Remove a library:</strong></p>
+        <pre><code>pip uninstall pandas</code></pre>
+
+        <p><strong>Freeze your environment</strong> (equivalent to <code>renv::snapshot()</code>):</p>
+        <pre><code>pip freeze &gt; requirements.txt</code></pre>
+
+        <p><strong>Recreate the environment from requirements:</strong></p>
+        <pre><code>pip install -r requirements.txt</code></pre>
+
+        <p><strong>Deactivate when finished:</strong></p>
+        <pre><code>deactivate</code></pre>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">Gotcha &mdash; "Access denied" on pip</div>
+          <p>If you see an "access denied" error when running <code>pip install</code>, you are most likely running pip <em>outside</em> a virtual environment, and pip is trying to write to a system-level folder. Always activate your venv first before installing packages.</p>
+        </div>
+        <div class="callout callout-tip">
+          <div class="callout-label">Tip</div>
+          <p>Confirm the correct environment is active with <code>where python</code>. The path returned should contain <code>stats-env\Scripts</code>.</p>
+        </div>
+      </div>
+    </article>
+  </section><!-- /windows -->
+
+
+  <!-- ═══════════════════════ R USERS ═══════════════════════ -->
+  <h2 class="section-heading">Tips for R users</h2>
+  <div class="info-card">
+    <p style="font-size:0.9rem;color:var(--text-muted);margin-bottom:1.1rem">Python's package management maps closely to R's ecosystem &mdash; the concepts just have different names.</p>
+    <table class="data-table" aria-label="R to Python concept mapping">
+      <thead>
+        <tr>
+          <th>R concept</th>
+          <th>Python equivalent</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Separate R installation per project</td>
+          <td>Virtual environment (<code>venv</code>)</td>
+          <td>Isolates packages so project A cannot break project B</td>
+        </tr>
+        <tr>
+          <td>Switching to a project R library</td>
+          <td><code>source ~/stats-env/bin/activate</code></td>
+          <td>Activates the isolated environment for the current terminal session</td>
+        </tr>
+        <tr>
+          <td><code>install.packages("ggplot2")</code></td>
+          <td><code>pip install matplotlib</code></td>
+          <td>Downloads and installs a package from PyPI (Python's CRAN equivalent)</td>
+        </tr>
+        <tr>
+          <td><code>library(ggplot2)</code></td>
+          <td><code>import matplotlib.pyplot as plt</code></td>
+          <td>Loads an installed package into the current script or notebook</td>
+        </tr>
+        <tr>
+          <td><code>renv::snapshot()</code></td>
+          <td><code>pip freeze &gt; requirements.txt</code></td>
+          <td>Records the exact version of every installed package to a file</td>
+        </tr>
+        <tr>
+          <td><code>renv::restore()</code></td>
+          <td><code>pip install -r requirements.txt</code></td>
+          <td>Recreates an environment from a previously saved snapshot</td>
+        </tr>
+        <tr>
+          <td>CRAN</td>
+          <td>PyPI (pypi.org)</td>
+          <td>The central repository where community packages are published</td>
+        </tr>
+        <tr>
+          <td>RStudio</td>
+          <td>JupyterLab</td>
+          <td>The interactive development environment for running and exploring code</td>
+        </tr>
+        <tr>
+          <td>R script (<code>.R</code>)</td>
+          <td>Jupyter notebook (<code>.ipynb</code>)</td>
+          <td>Notebooks interleave code, output, and prose in one document</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- ═══════════════════════ GOTCHAS ═══════════════════════ -->
+  <h2 class="section-heading">Common gotchas</h2>
+  <div class="info-card">
+
+    <h3>Jupyter kernel mismatch</h3>
+    <div class="callout callout-warn">
+      <div class="callout-label">Gotcha</div>
+      <p>If you launch JupyterLab from <em>outside</em> your virtual environment, the notebook's Python kernel will be the system Python &mdash; not your <code>stats-env</code> Python. Your installed packages will not be visible, and imports will fail. <strong>Always activate the venv first, then run <code>jupyter lab</code> from within it.</strong></p>
+      <p>To check which Python a running notebook is using, run this in a cell:</p>
+      <pre><code>import sys; print(sys.executable)</code></pre>
+      <p>The output path should contain <code>stats-env</code>. If it does not, shut down Jupyter, activate the venv, and restart.</p>
+    </div>
+
+    <h3>Permissions quick-reference</h3>
+    <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:0.75rem">Which steps actually need admin rights or IT involvement?</p>
+    <table class="data-table" aria-label="Permissions by step and platform">
+      <thead>
+        <tr>
+          <th>Step</th>
+          <th>Linux</th>
+          <th>macOS</th>
+          <th>Windows</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>1 &mdash; Install Python</strong></td>
+          <td><span class="badge badge-admin">Admin / IT</span></td>
+          <td><span class="badge badge-user">User only</span></td>
+          <td><span class="badge badge-user">User only (per-user)</span></td>
+        </tr>
+        <tr>
+          <td><strong>2 &mdash; Install JupyterLab</strong></td>
+          <td><span class="badge badge-user">User only</span></td>
+          <td><span class="badge badge-user">User only</span></td>
+          <td><span class="badge badge-user">User only</span></td>
+        </tr>
+        <tr>
+          <td><strong>3 &mdash; Create venv</strong></td>
+          <td><span class="badge badge-user">User only</span></td>
+          <td><span class="badge badge-user">User only</span></td>
+          <td><span class="badge badge-user">User only</span></td>
+        </tr>
+        <tr>
+          <td><strong>4 &mdash; Activate &amp; install packages</strong></td>
+          <td><span class="badge badge-user">User only</span></td>
+          <td><span class="badge badge-user">User only</span></td>
+          <td><span class="badge badge-user">User only</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+
+<!-- ─────────────────────────── FOOTER ─────────────────────────── -->
+<footer>
+  <p>This guide targets <strong>Python 3.10 and later</strong>. Commands and behaviours may differ on older versions.<br>
+  Always use a virtual environment for project work &mdash; it keeps your system clean and your results reproducible.</p>
+</footer>
+
+<!-- ─────────────────────────── JS ─────────────────────────── -->
+<script>
+  function switchTab(platform) {
+    document.querySelectorAll('.tab-btn').forEach(function(btn) {
+      var isActive = btn.id === 'tab-' + platform;
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+    document.querySelectorAll('.platform-panel').forEach(function(panel) {
+      panel.classList.toggle('active', panel.id === 'panel-' + platform);
+    });
+  }
+</script>
+
+</body>
+</html>
