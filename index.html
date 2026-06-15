@@ -95,6 +95,25 @@
       font-size: 16px;
     }
 
+    /* ── AI warning banner ── */
+    .ai-banner {
+      background: #fef3c7;
+      border-bottom: 1px solid #f59e0b;
+      color: #78350f;
+      text-align: center;
+      padding: 0.6rem 1.5rem;
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .ai-banner {
+        background: #1c0f00;
+        border-bottom-color: #b45309;
+        color: #fde68a;
+      }
+    }
+
     /* ── Sticky nav ── */
     nav {
       position: sticky;
@@ -486,6 +505,11 @@
     </div>
   </div>
 </nav>
+
+<!-- ─────────────────────────── BANNER ─────────────────────────── -->
+<div class="ai-banner" role="alert">
+  <strong>AI-generated content.</strong> This guide was produced by an AI assistant and may contain errors or outdated information. Please verify commands against official documentation before following them on a shared or production system.
+</div>
 
 <!-- ─────────────────────────── HERO ─────────────────────────── -->
 <header class="hero">
